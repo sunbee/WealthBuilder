@@ -103,4 +103,7 @@ dependencies {
     // Compose Nav Destinations
     implementation("io.github.raamcosta.compose-destinations:core:1.1.2-beta")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.1.2-beta")
+
+    // SwipeRefresh
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.24.2-alpha")
 }

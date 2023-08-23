@@ -22,7 +22,7 @@ interface StockDao {
         """
             SELECT *
             FROM CompanyListingEntity
-            WHERE LOWER(name) LIKE "%" || LOWER(:query) || "%" OR
+            WHERE LOWER(name) LIKE '%' || LOWER(:query) || '%' OR
                 UPPER(:query) == symbol
         """
     )

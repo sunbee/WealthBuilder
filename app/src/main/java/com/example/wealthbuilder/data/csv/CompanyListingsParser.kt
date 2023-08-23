@@ -1,5 +1,6 @@
 package com.example.wealthbuilder.data.csv
 
+import android.util.Log
 import com.example.wealthbuilder.domain.model.CompanyListing
 import com.opencsv.CSVReader
 import kotlinx.coroutines.Dispatchers
@@ -7,10 +8,13 @@ import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.io.InputStreamReader
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class CompanyListingsParser @Inject constructor(): CSVParser<CompanyListing> {
 
     override suspend fun parse(stream: InputStream): List<CompanyListing> {
+        Log.d("DEBUG_DATA", "parser says Hi from CompanyListingsParser!")
         val csvReader = CSVReader(InputStreamReader(stream))
         return withContext(Dispatchers.IO) {
             csvReader
@@ -20,6 +24,7 @@ class CompanyListingsParser @Inject constructor(): CSVParser<CompanyListing> {
                     val symbol = line.getOrNull(0)
                     val name = line.getOrNull(1)
                     val exchange = line.getOrNull(2)
+                    Log.d("DEBUG_DATA", "Got ${symbol}. ${name}, ${exchange} in parser!")
                     CompanyListing(
                         name = name ?: return@mapNotNull null,
                         symbol = symbol ?: return@mapNotNull null,
@@ -27,6 +32,7 @@ class CompanyListingsParser @Inject constructor(): CSVParser<CompanyListing> {
                     )
                 }
                 .also {
+                    Log.d("DEBUG_DATA", "CSVParser got size ${it.size.toString()}")
                     csvReader.close()
                 }
         }
