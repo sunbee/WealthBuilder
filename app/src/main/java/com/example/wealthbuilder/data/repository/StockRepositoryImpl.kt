@@ -2,11 +2,15 @@ package com.example.wealthbuilder.data.repository
 
 import android.util.Log
 import com.example.wealthbuilder.data.csv.CSVParser
+import com.example.wealthbuilder.data.csv.IntradayInfoParser
 import com.example.wealthbuilder.data.local.StockDatabase
+import com.example.wealthbuilder.data.mapper.toCompanyInfo
 import com.example.wealthbuilder.data.mapper.toCompanyListing
 import com.example.wealthbuilder.data.mapper.toCompanyListingEntity
 import com.example.wealthbuilder.data.remote.StockApi
+import com.example.wealthbuilder.domain.model.CompanyInfo
 import com.example.wealthbuilder.domain.model.CompanyListing
+import com.example.wealthbuilder.domain.model.IntradayInfo
 import com.example.wealthbuilder.domain.repository.StockRepository
 import com.example.wealthbuilder.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +24,8 @@ import javax.inject.Singleton
 class StockRepositoryImpl @Inject constructor(
     private val api: StockApi,
     private val db: StockDatabase,
-    private val companyListingsParser: CSVParser<CompanyListing>
+    private val companyListingsParser: CSVParser<CompanyListing>,
+    private val intradayInfoParser: CSVParser<IntradayInfo>
 ): StockRepository {
 
     private val dao = db.dao
@@ -83,4 +88,30 @@ class StockRepositoryImpl @Inject constructor(
             }  // end LISTINGS
         }  // end FLOW
     }  // end FUN
+
+    override suspend fun getIntradayInfo(symbol: String): Resource<List<IntradayInfo>> {
+        return try {
+            val response = api.getIntradayInfo(symbol)
+            Resource.Success(data = intradayInfoParser.parse(response.byteStream()))
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Resource.Error(message = "Got NO data from intraday trading!")
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            Resource.Error(message = "Got NO data from intraday trading!")
+        }
+    }
+
+    override suspend fun getCompanyInfo(symbol: String): Resource<CompanyInfo> {
+        return try {
+            val companyInfo = api.getCompanyInfo(symbol).toCompanyInfo()
+            Resource.Success(data = companyInfo)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Resource.Error(message = "Got NO data for company info!")
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            Resource.Error(message = "Got NO data from company info!")
+        }
+    }
 }  // end IMPL
