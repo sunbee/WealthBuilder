@@ -51,7 +51,7 @@ fun CompanyItem(
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "(${company.exchange})",
+                text = "(${company.symbol})",
                 fontStyle = FontStyle.Italic,
                 color = MaterialTheme.colorScheme.onBackground)
         }
