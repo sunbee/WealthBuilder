@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wealthbuilder.domain.model.CompanyListing
+import com.example.wealthbuilder.ui.company_info.CompanyInfoScreen
+import com.example.wealthbuilder.ui.destinations.CompanyInfoScreenDestination
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
@@ -63,7 +65,8 @@ fun CompanyListingsScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                TODO(/* Navigate to next screen. */)
+                                navigator.navigate(
+                                    CompanyInfoScreenDestination(symbol = company.symbol))
                             }
                             .padding(16.dp))
                     if (i < state.value.companies.size) {

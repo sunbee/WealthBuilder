@@ -22,7 +22,7 @@ import kotlin.math.round
 @Composable
 fun StockGraph(
     stockTrades: List<IntradayInfo> = emptyList(),
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     graphColor: Color = Color.Green
 ) {
     val spacing = 100f
@@ -44,7 +44,7 @@ fun StockGraph(
             textSize = density.run { 12.sp.toPx() }
         }
     }
-    Canvas(modifier = Modifier) {
+    Canvas(modifier = modifier) {
         val spacePerHour = (size.width - spacing) / stockTrades.size
         (0 until stockTrades.size - 1 step 2).forEach { i ->
             val stockTrade = stockTrades[i]
