@@ -88,7 +88,7 @@ fun StockGraph(
                 if (i == 0) {
                     moveTo(xL, yL)
                 }
-                quadraticBezierTo(xL, yL, (xL+xR)/2f, (yL+yR)/2f)
+                quadraticBezierTo(xL, yL, (xL + xR) / 2f, (yL + yR) / 2f)
                 lastX = (xL + xR) / 2f
             }
         }
